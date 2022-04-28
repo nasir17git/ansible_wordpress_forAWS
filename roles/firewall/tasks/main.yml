@@ -1,5 +1,5 @@
----
 # UFW Configuration
+---
   - name: UFW - Allow
     ufw:
       rule: allow

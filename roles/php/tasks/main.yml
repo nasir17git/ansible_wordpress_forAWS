@@ -1,3 +1,4 @@
+#PHP Configuration
 ---
 - name: Install prerequisites
   apt: name=aptitude update_cache=yes state=latest force_apt_get=yes
@@ -8,3 +9,4 @@
     update_cache: yes
     cache_valid_time: 86400
     state: present
+...

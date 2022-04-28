@@ -1,3 +1,5 @@
+# Apache Configuration
+---
 - name: Install Apache2
   apt:
     pkg: ['apache2', 'libapache2-mod-php']
@@ -37,3 +39,4 @@
     proto: "{{ufw_proto}}"
   tags: [ ufw apache2 ]
   notify: restart apache2
+  ...
