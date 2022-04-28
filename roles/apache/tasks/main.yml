@@ -1,0 +1,42 @@
+- name: Install Apache2
+  apt:
+    pkg: ['apache2', 'libapache2-mod-php']
+    update_cache: yes
+    cache_valid_time: 86400
+    state: present
+
+- name: Install MySQL-Client
+  apt:
+    pkg: 'mysql-client'
+    update_cache: yes
+    cache_valid_time: 86400
+    state: present
+    
+- name: Set up Apache virtualhost
+  template:
+    src: "files/apache.conf.j2"
+    dest: "/etc/apache2/sites-available/wordpress.conf"
+  
+- name: Enable new site
+  shell: /usr/sbin/a2ensite wordpress.conf
+  
+- name: Disable default Apache site
+  shell: /usr/sbin/a2dissite 000-default.conf
+  
+- name: UFW - Allow HTTP port
+  ufw:
+    rule: allow
+    port: "80"
+    proto: tcp
+
+- name: UFW - Allow mysql
+  ufw:
+    rule: allow
+    port: "3306"
+    proto: tcp
+
+- name: restart apache
+  service:
+    name: apache2
+    state: restarted
+  
