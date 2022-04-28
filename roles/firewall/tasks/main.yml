@@ -1,0 +1,8 @@
+---
+# UFW Configuration
+  - name: UFW - Allow
+    ufw:
+      rule: allow
+      port: "{{ ufw_port }}"
+      proto: "{{ ufw_proto }}"
+...
