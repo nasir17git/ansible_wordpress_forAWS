@@ -1,1 +1,56 @@
 # MySQL Configuration
+---
+- name: Install prerequisites
+  apt: name=aptitude update_cache=yes state=latest force_apt_get=yes
+
+- name: Install MySQL Packages
+  apt: name={{ item }} update_cache=yes state=latest
+  loop: [ 'mysql-server','python3-pymysql']
+
+- name: Creates database for WordPress
+  mysql_db:
+    name: "{{ mysql_db }}"
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+  register: database_exists
+
+- name: Set MySQL root Password
+  mysql_user:
+    name: root    
+    password: '{{ mysql_root_password }}'
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  when: database_exists.changed
+
+- name: Remove all anonymous user accounts
+  mysql_user:
+    name: ''
+    host_all: yes
+    state: absent
+    login_user: root
+    login_password: '{{ mysql_root_password }}'
+
+- name: Remove the MySQL test database
+  mysql_db:
+    name: test
+    state: absent
+    login_user: root
+    login_password: '{{ mysql_root_password }}'
+
+- name: Create MySQL user for WordPress
+  mysql_user:
+    name: "{{ mysql_user }}"
+    password: "{{ mysql_password }}"
+    host: "{{ mysql_user_host }}"
+    priv: "{{ mysql_db }}.*:ALL"
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    
+- name: External Connection Setting
+  lineinfile:
+    path: /etc/mysql/mysql.conf.d/mysqld.cnf
+    regexp: bind-address
+    line: bind-address=0.0.0.0
+  notify: Restart MySQL services
+...

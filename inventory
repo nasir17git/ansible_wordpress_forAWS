@@ -7,3 +7,11 @@ ansi-node2
 
 [web]
 ansi-node3
+
+[web:vars]
+ufw_proto=tcp
+ufw_port=80
+
+[db:vars]
+ufw_proto=tcp
+ufw_port=3306
