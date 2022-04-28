@@ -5,6 +5,9 @@
     - php
     - firewall
     - mysql
+  vars:
+    ufw_proto: tcp
+    ufw_port: 80
 
 - name: WEB server
   hosts: web
@@ -13,4 +16,7 @@
     - firewall
     - apache
     - wordpress
-    
+  vars:
+    ufw_proto: tcp
+    ufw_port: 80
+...
