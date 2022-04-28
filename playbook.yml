@@ -1,13 +1,16 @@
 ---
-
-- hosts: db
+- name: DB server
+  hosts: db
   roles:
     - php
+    - firewall
     - mysql
 
-
-- hosts: web
+- name: WEB server
+  hosts: web
   roles:
     - php
+    - firewall
     - apache
     - wordpress
+    
