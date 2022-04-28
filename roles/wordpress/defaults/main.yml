@@ -1,0 +1,11 @@
+---
+# MySQL Settings
+mysql_root_password: "123123123!"
+mysql_db: "wordpress"
+mysql_user: "wpadmin"
+mysql_password: "dkagh1.!"
+mysql_ip: "192.168.56.22"
+
+#HTTP Settings
+http_port: "80"
+http_conf: "wordpress.conf"

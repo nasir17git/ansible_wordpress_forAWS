@@ -6,8 +6,6 @@
     update_cache: yes
     cache_valid_time: 86400
     state: present
-    notify: restart apache2
-    tags: [ install apache2 ]
 
 - name: Install MySQL-Client
   apt:
@@ -15,28 +13,28 @@
     update_cache: yes
     cache_valid_time: 86400
     state: present
-    tags: [ install mysql-client ]
-    
+
 - name: Set up Apache virtualhost
   template:
     src: "files/apache.conf.j2"
     dest: "/etc/apache2/sites-available/wordpress.conf"
-  tags: [ enable virtualhost]
 
 - name: Enable new site
   shell: /usr/sbin/a2ensite wordpress.conf
-  tags: [ enable virtualhost]
 
 - name: Disable default Apache site
   shell: /usr/sbin/a2dissite 000-default.conf
   notify: restart apache2
-  tags: [ enable virtualhost]
   
 - name: UFW - Allow HTTP port
   ufw:
     rule: allow
     port: "{{ufw_port}}"
     proto: "{{ufw_proto}}"
-  tags: [ ufw apache2 ]
   notify: restart apache2
-  ...
+
+- name: restart apache2
+  service:
+    name: apache2
+    state: restarted
+...
