@@ -9,12 +9,12 @@
 
 - name: Set up wp-config
   template:
-    src: "../files/wp-config.php"
+    src: "../files/wp-config.php.j2"
     dest: "/var/www/{{ http_host }}/wordpress/wp-config.php"
 
 - name: Update WordPress config file
   lineinfile:
-    path: "/var/www/{{ http_host }}/wordpress/wp-config.php"
+    path: "/var/www/{{ http_host }}/wordpress/wp-config.php.j2"
     regexp: "{{item.regexp}}"
     line: "{{item.line}}"
   with_items:
