@@ -3,7 +3,6 @@
 mysql_root_password: "jjhrjjhr1!"
 mysql_db: "wordpress"
 mysql_user: "admin"
-mysql_user_host: "web-01"
+mysql_user_host: "192.168.56.22"
 mysql_password: "dkagh1."
-mysql_host: "db-01"
 ...
