@@ -10,3 +10,4 @@ mysql_host: "192.168.56.22"
 http_port: "80"
 http_host: "html"
 http_conf: "wordpress.conf"
+...
