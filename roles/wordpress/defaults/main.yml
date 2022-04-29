@@ -8,4 +8,5 @@ mysql_ip: "192.168.56.22"
 
 #HTTP Settings
 http_port: "80"
+http_host: "html"
 http_conf: "wordpress.conf"

@@ -25,16 +25,4 @@
 - name: Disable default Apache site
   shell: /usr/sbin/a2dissite 000-default.conf
   notify: restart apache2
-  
-- name: UFW - Allow HTTP port
-  ufw:
-    rule: allow
-    port: "{{ufw_port}}"
-    proto: "{{ufw_proto}}"
-  notify: restart apache2
-
-- name: restart apache2
-  service:
-    name: apache2
-    state: restarted
 ...
