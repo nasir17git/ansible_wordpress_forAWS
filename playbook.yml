@@ -7,7 +7,7 @@
     - mysql
   vars:
     ufw_proto: tcp
-    ufw_port: 80
+    ufw_port: 3306
 
 - name: WEB server
   hosts: web
