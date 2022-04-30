@@ -14,6 +14,11 @@
     cache_valid_time: 86400
     state: present
 
+- name: Add listening port for Apache virtualhost
+  template:
+    src: "files/ports.conf.j2"
+    dest: "/etc/apache2/ports.conf"  
+
 - name: Set up Apache virtualhost
   template:
     src: "files/apache.conf.j2"
