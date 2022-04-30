@@ -2,9 +2,9 @@
 - name: DB server
   hosts: db
   roles:
-    - php
-    - firewall
-    - mysql
+    - { role: php,  tags: php_db }
+    - { role: firewall,  tags: firewall_db }
+    - { role: mysql,  tags: mysql_db }
   vars:
     ufw_proto: tcp
     ufw_port: 3306
@@ -12,11 +12,11 @@
 - name: WEB server
   hosts: web
   roles:
-    - php
-    - firewall
-    - apache
-    - wordpress
+    - { role: php,  tags: php_web }
+    - { role: firewall,  tags: firewall_web }
+    - { role: apache,  tags: apache_web }
+    - { role: wordpress,  tags: wordpress_web }
   vars:
     ufw_proto: tcp
-    ufw_port: 80
+    ufw_port: 8000
 ...
