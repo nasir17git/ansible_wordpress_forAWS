@@ -1,11 +1,11 @@
 # WordPress Configuration
 ---
-- name: Download and unpack latest WordPress
-  unarchive:
-    src: "https://wordpress.org/wordpress-5.8.4.tar.gz"
+- name: Clone latest Wordpress
+  ansible.builtin.git:
+    repo: https://github.com/ansible/ansible-examples.git
     dest: "/var/www/{{ http_host }}"
-    remote_src: yes
-    creates: "/var/www/{{ http_host }}/wordpress"
+    single_branch: yes
+    version: master
 
 - name: Set up wp-config
   template:
