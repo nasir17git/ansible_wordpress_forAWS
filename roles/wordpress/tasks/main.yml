@@ -4,7 +4,6 @@
   ansible.builtin.git:
     repo: https://github.com/ansible/ansible-examples.git
     dest: "/var/www/{{ http_host }}"
-    single_branch: yes
     version: master
 
 - name: Set up wp-config
