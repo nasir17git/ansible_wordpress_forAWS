@@ -2,8 +2,8 @@
 ---
 - name: Clone latest Wordpress
   ansible.builtin.git:
-    repo: https://github.com/ansible/ansible-examples.git
-    dest: "/var/www/{{ http_host }}"
+    repo: https://github.com/WordPress/WordPress
+    dest: "/var/www/{{ http_host }}/wordpress"
     version: master
 
 - name: Set up wp-config
