@@ -16,7 +16,7 @@
         region: ap-northeast-2
         state: present
         tags:
-          Name: seoul_igw
+          Name: pjt3_igw
       register: igw_result
 
     - name: Create Public Subnet
@@ -28,7 +28,7 @@
         map_public: yes
         state: present
         tags:
-          Name: pjt3sbn
+          Name: pjt3pubsbn
       register: subnet_result
 
     - name: Create Routing Table
@@ -45,13 +45,13 @@
 
     - name: Create Security Group
       ec2_group:
-        name: default sg
+        name: pjt3 sg
         vpc_id: "{{ vpc_result.vpc.id }}"
         region: ap-northeast-2
         state: present
         description: allow 22, 80, 8000, 3306
         tags:
-          Name: default sg
+          Name: pjt3 sg
         rules:
         - proto: tcp
           ports:
@@ -78,7 +78,7 @@
         region: ap-northeast-2
         instance_type: t2.micro
         image: ami-0454bb2fefc7de534
-        group: default sg
+        group: pjt3 sg
         wait: yes
         count: 1
         vpc_subnet_id: "{{ subnet_result.subnet.id }}"
@@ -92,8 +92,9 @@
         region: ap-northeast-2
         instance_type: t2.micro
         image: ami-0454bb2fefc7de534
-        group: default sg
+        group: pjt3 sg
         wait: yes
         count: 1
         vpc_subnet_id: "{{ subnet_result.subnet.id }}"
         assign_public_ip: yes
+...
