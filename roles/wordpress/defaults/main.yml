@@ -3,7 +3,7 @@
 mysql_db: "wordpress"
 mysql_user: "admin"
 mysql_password: "dkagh1.!"
-mysql_host: "192.168.56.53"
+mysql_host: "{{ groups['db'][0] }}"
 
 #HTTP Settings
 http_host: "html"

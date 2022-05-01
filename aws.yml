@@ -1,0 +1,99 @@
+---
+- hosts: localhost
+
+  tasks:
+    - name: Create VPC
+      ec2_vpc_net:
+        name: pjt3 VPC
+        cidr_block: 10.0.0.0/16
+        region: ap-northeast-2
+        state: present
+      register: vpc_result
+
+    - name: Create Internet Gateway
+      ec2_vpc_igw:
+        vpc_id: "{{ vpc_result.vpc.id }}"
+        region: ap-northeast-2
+        state: present
+        tags:
+          Name: seoul_igw
+      register: igw_result
+
+    - name: Create Public Subnet
+      ec2_vpc_subnet:
+        cidr: 10.0.50.0/24
+        vpc_id: "{{ vpc_result.vpc.id }}"
+        region: ap-northeast-2
+        az: ap-northeast-2a
+        map_public: yes
+        state: present
+        tags:
+          Name: pjt3sbn
+      register: subnet_result
+
+    - name: Create Routing Table
+      ec2_vpc_route_table:
+        vpc_id: "{{ vpc_result.vpc.id }}"
+        region: ap-northeast-2
+        state: present
+        subnets: ["{{ subnet_result.subnet.id }}"]
+        routes:
+          - dest: 0.0.0.0/0
+            gateway_id: "{{ igw_result.gateway_id }}"
+        tags:
+          Name: pjt3routetable
+
+    - name: Create Security Group
+      ec2_group:
+        name: default sg
+        vpc_id: "{{ vpc_result.vpc.id }}"
+        region: ap-northeast-2
+        state: present
+        description: allow 22, 80, 8000, 3306
+        tags:
+          Name: default sg
+        rules:
+        - proto: tcp
+          ports:
+          - 22
+          cidr_ip: 0.0.0.0/0
+        - proto: tcp
+          ports:
+          - 80
+          cidr_ip: 0.0.0.0/0
+        - proto: tcp
+          ports:
+          - 3306
+          cidr_ip: 0.0.0.0/0 
+        - proto: tcp
+          ports:
+          - 8000
+          cidr_ip: 0.0.0.0/0  
+
+    - name: Create WEB EC2
+      ec2:
+        key_name: pjt3asb
+        instance_tags:
+          Name: web
+        region: ap-northeast-2
+        instance_type: t2.micro
+        image: ami-0454bb2fefc7de534
+        group: default sg
+        wait: yes
+        count: 1
+        vpc_subnet_id: "{{ subnet_result.subnet.id }}"
+        assign_public_ip: yes
+
+    - name: Create DB EC2
+      ec2:
+        key_name: pjt3asb
+        instance_tags:
+          Name: db
+        region: ap-northeast-2
+        instance_type: t2.micro
+        image: ami-0454bb2fefc7de534
+        group: default sg
+        wait: yes
+        count: 1
+        vpc_subnet_id: "{{ subnet_result.subnet.id }}"
+        assign_public_ip: yes
